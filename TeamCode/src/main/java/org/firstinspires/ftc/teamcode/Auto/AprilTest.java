@@ -93,7 +93,7 @@ public class AprilTest extends LinearOpMode
                 boolean tagFound = false;
 
                 for (AprilTagDetection tag : currentDetections) {
-                    if (tag.id == ID_TAG_OF_INTEREST) {
+                    if (tag.id == left || tag.id == middle || tag.id == right) {
                         tagOfInterest = tag;
                         tagFound = true;
                         break;
