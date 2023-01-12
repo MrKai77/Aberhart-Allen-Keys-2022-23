@@ -53,8 +53,6 @@ public class AprilTest extends LinearOpMode
     // UNITS ARE METERS
     double tagsize = 0.166; //THIS MIGHT NEED TO BE CHANGED FOR US
 
-    int ID_TAG_OF_INTEREST = 18; // Tag ID 18 from the 36h11 family
-
     int left = 17;
     int middle = 18;
     int right = 19;
@@ -71,7 +69,7 @@ public class AprilTest extends LinearOpMode
         camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
             @Override
             public void onOpened() {
-                camera.startStreaming(800, 448, OpenCvCameraRotation.UPRIGHT);
+                camera.startStreaming(1280, 720, OpenCvCameraRotation.UPRIGHT);
             }
 
             @Override
@@ -104,7 +102,7 @@ public class AprilTest extends LinearOpMode
                     telemetry.addLine("Tag of interest is in sight!\n\nLocation data:");
                     tagToTelemetry(tagOfInterest);
                 } else {
-                    telemetry.addLine("Don't see tag of interest :(");
+                    telemetry.addLine("The right tags not seen : (");
 
                     if (tagOfInterest == null) {
                         telemetry.addLine("(The tag has never been seen)");
