@@ -92,7 +92,7 @@ public class GourmetOpMode extends OpMode {
         // 0.15 is the power required to keep the arm in place
         // (rightTrigger - leftTrigger/2) is to move the arm up/down respectively
         // Precision is wether precision mode is on
-        armMotor.setPower(0.1 + (rightTrigger - leftTrigger/2) / precision);
+        armMotor.setPower(0.1 + (rightTrigger - leftTrigger) / precision);
     }
 }
 
