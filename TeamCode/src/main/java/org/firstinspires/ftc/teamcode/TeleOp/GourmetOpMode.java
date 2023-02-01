@@ -18,6 +18,8 @@ public class GourmetOpMode extends OpMode {
     Servo rightClaw;
     Servo leftClaw;
 
+    Boolean armIsRaised = false;
+
     @Override
     public void init() {
         telemetry.addData("Status", "Initializing");
@@ -26,7 +28,7 @@ public class GourmetOpMode extends OpMode {
         frontRightMotor = hardwareMap.get(DcMotor.class, "FrontRight");
         backLeftMotor = hardwareMap.get(DcMotor.class, "BackLeft");
         backRightMotor = hardwareMap.get(DcMotor.class, "BackRight");
-        
+
         frontRightMotor.setDirection(DcMotor.Direction.REVERSE);
         backRightMotor.setDirection(DcMotor.Direction.REVERSE);
 
@@ -50,13 +52,13 @@ public class GourmetOpMode extends OpMode {
         double FRMotorSpeed = 0;
         double BLMotorSpeed = 0;
         double BRMotorSpeed = 0;
-        
+
         telemetry.addData("Gamepad Trigger", rightTrigger);
 
         if(leftStick != 0 || rightStick != 0) { // Basic forward/back code
             FLMotorSpeed = leftStick;
             BLMotorSpeed = leftStick;
-            
+
             FRMotorSpeed = rightStick;
             BRMotorSpeed = rightStick;
         } else {
@@ -73,26 +75,49 @@ public class GourmetOpMode extends OpMode {
                 BLMotorSpeed = -1;
             }
         }
-        
+
         frontLeftMotor.setPower(FLMotorSpeed/precision);
         backLeftMotor.setPower(BLMotorSpeed/precision);
         frontRightMotor.setPower(FRMotorSpeed/precision);
         backRightMotor.setPower(BRMotorSpeed/precision);
 
         if(gamepad1.b) {    // Close claw
-            rightClaw.setPosition(-0.8);
-            leftClaw.setPosition(0.8);
+            rightClaw.setPosition(1);
+            leftClaw.setPosition(0);
         }
         if(gamepad1.x) {    // Open claw
-            rightClaw.setPosition(-0.3);
-            leftClaw.setPosition(0.3);
+            rightClaw.setPosition(0.5);
+            leftClaw.setPosition(0.5);
         }
 
         // Arm motor:
         // 0.15 is the power required to keep the arm in place
         // (rightTrigger - leftTrigger/2) is to move the arm up/down respectively
         // Precision is wether precision mode is on
-        armMotor.setPower(0.1 + (rightTrigger - leftTrigger/2) / precision);
+//        armMotor.setPower((0.1 + (rightTrigger - leftTrigger/2) / precision) * 0.75);
+
+        if (gamepad1.right_bumper && !armIsRaised) {    // Raise claw
+            armMotor.setPower(0.75);
+            try {
+                Thread.sleep(1100);
+            } catch(InterruptedException e) {
+                System.out.println("got interrupted!");
+            }
+            armMotor.setPower(0);
+
+            armIsRaised = true;
+        }
+        if (gamepad1.left_bumper && armIsRaised) {    // Lower claw
+            armMotor.setPower(-0.75);
+            try {
+                Thread.sleep(1100);
+            } catch(InterruptedException e) {
+                System.out.println("got interrupted!");
+            }
+            armMotor.setPower(0);
+
+            armIsRaised = false;
+        }
     }
 }
 
