@@ -14,7 +14,7 @@ import org.openftc.easyopencv.OpenCvInternalCamera;
 
 import java.util.ArrayList;
 
-
+@Autonomous
 public class AprilAuto extends LinearOpMode
 {
     //INTRODUCE VARIABLES HERE
