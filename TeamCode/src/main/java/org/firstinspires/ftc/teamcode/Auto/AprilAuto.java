@@ -1,9 +1,11 @@
 
 package org.firstinspires.ftc.teamcode.Auto;
 
+
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.openftc.apriltag.AprilTagDetection;
@@ -21,6 +23,11 @@ public class AprilAuto extends LinearOpMode
 
     OpenCvCamera camera;
     AprilTagDetectionPipeline aprilTagDetectionPipeline;
+    DcMotor frontLeftMotor;
+    DcMotor frontRightMotor;
+    DcMotor backLeftMotor;
+    DcMotor backRightMotor;
+    DcMotor armMotor;
 
     static final double FEET_PER_METER = 3.28084;
 
@@ -49,6 +56,14 @@ public class AprilAuto extends LinearOpMode
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         camera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
         aprilTagDetectionPipeline = new AprilTagDetectionPipeline(tagsize, fx, fy, cx, cy);
+
+        frontLeftMotor = hardwareMap.get(DcMotor.class, "FrontLeft");
+        frontRightMotor = hardwareMap.get(DcMotor.class, "FrontRight");
+        backLeftMotor = hardwareMap.get(DcMotor.class, "BackLeft");
+        backRightMotor = hardwareMap.get(DcMotor.class, "BackRight");
+
+        frontLeftMotor.setDirection(DcMotor.Direction.REVERSE);
+        backLeftMotor.setDirection(DcMotor.Direction.REVERSE);
 
         camera.setPipeline(aprilTagDetectionPipeline);
         camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
@@ -151,7 +166,27 @@ public class AprilAuto extends LinearOpMode
             telemetry.update();
         }
 
-        //PUT AUTON CODE HERE (DRIVER PRESSED THE PLAY BUTTON!)
+        if(tagOfInterest.id == 1){//left
+
+            frontLeftMotor.setPower(-1);
+            frontRightMotor.setPower(-1);
+            backLeftMotor.setPower(-1);
+            backRightMotor.setPower(-1);
+
+            sleep(10000);
+
+            frontLeftMotor.setPower(0);
+            frontRightMotor.setPower(0);
+            backLeftMotor.setPower(0);
+            backRightMotor.setPower(0);
+
+        }else if(tagOfInterest.id == 2){//right
+
+
+        }else{//middle
+
+
+        }
 
     }
 
