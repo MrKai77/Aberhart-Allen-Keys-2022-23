@@ -2,6 +2,7 @@
 package org.firstinspires.ftc.teamcode.Auto;
 
 
+
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -170,14 +171,42 @@ public class geoff extends LinearOpMode
             telemetry.update();
         }
 
-        if(tagOfInterest.id == 1){//right
+        if(tagOfInterest.id == 1 || tagOfInterest==null){//right
 
             frontLeftMotor.setPower(-1);
-            frontRightMotor.setPower(-1);
-            backLeftMotor.setPower(-1);
+            frontRightMotor.setPower(1);
+            backLeftMotor.setPower(1);
             backRightMotor.setPower(-1);
 
-        }else if(tagOfInterest.id == 2 || tagOfInterest==null){//middle
+            sleep(900);
+
+            frontLeftMotor.setPower(1);
+            frontRightMotor.setPower(1);
+            backLeftMotor.setPower(1);
+            backRightMotor.setPower(1);
+
+            sleep(1800);
+
+            frontLeftMotor.setPower(0);
+            frontRightMotor.setPower(0);
+            backLeftMotor.setPower(0);
+            backRightMotor.setPower(0);
+
+        }else if(tagOfInterest.id == 2 ){//middle
+
+            frontLeftMotor.setPower(1);
+            frontRightMotor.setPower(1);
+            backLeftMotor.setPower(1);
+            backRightMotor.setPower(1);
+
+            sleep(1800);
+
+            frontLeftMotor.setPower(-1);
+            frontRightMotor.setPower(1);
+            backLeftMotor.setPower(1);
+            backRightMotor.setPower(-1);
+
+            sleep(900);
 
             frontLeftMotor.setPower(1);
             frontRightMotor.setPower(1);
