@@ -18,7 +18,7 @@ import org.openftc.easyopencv.OpenCvInternalCamera;
 import java.util.ArrayList;
 
 @Autonomous
-public class AprilAuto extends LinearOpMode
+public class geoff extends LinearOpMode
 {
     //INTRODUCE VARIABLES HERE
 
@@ -67,7 +67,7 @@ public class AprilAuto extends LinearOpMode
         frontLeftMotor.setDirection(DcMotor.Direction.REVERSE);
         backLeftMotor.setDirection(DcMotor.Direction.REVERSE);
 
-         ElapsedTime runTime = new ElapsedTime();
+        ElapsedTime runTime = new ElapsedTime();
 
         camera.setPipeline(aprilTagDetectionPipeline);
         camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
@@ -95,13 +95,11 @@ public class AprilAuto extends LinearOpMode
          * The INIT-loop:
          * This REPLACES waitForStart!
          */
-        armMotor.setPower(1);
-        runTime.reset();
-        while(runTime.seconds() < 1){}
-        armMotor.setPower(0);
+
+        waitForStart();
 
 
-        while (!isStarted() && !isStopRequested()) {
+        while (tagOfInterest==null) {
             ArrayList<AprilTagDetection> currentDetections = aprilTagDetectionPipeline.getLatestDetections();
 
             if(currentDetections.size() != 0)
@@ -160,7 +158,7 @@ public class AprilAuto extends LinearOpMode
         }
 
 
-        waitForStart();
+
 
 
         if(tagOfInterest != null) {
@@ -179,12 +177,19 @@ public class AprilAuto extends LinearOpMode
             backLeftMotor.setPower(-1);
             backRightMotor.setPower(-1);
 
-        }else if(tagOfInterest.id == 2){//middle
+        }else if(tagOfInterest.id == 2 || tagOfInterest==null){//middle
 
             frontLeftMotor.setPower(1);
             frontRightMotor.setPower(1);
             backLeftMotor.setPower(1);
             backRightMotor.setPower(1);
+
+            sleep(1800);
+
+            frontLeftMotor.setPower(0);
+            frontRightMotor.setPower(0);
+            backLeftMotor.setPower(0);
+            backRightMotor.setPower(0);
 
         }else{//left
 
