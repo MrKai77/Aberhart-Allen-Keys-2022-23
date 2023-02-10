@@ -94,30 +94,6 @@ public class GourmetOpMode extends OpMode {
         // 0.15 is the power required to keep the arm in place
         // (rightTrigger - leftTrigger/2) is to move the arm up/down respectively
         // Precision is wether precision mode is on
-//        armMotor.setPower((0.1 + (rightTrigger - leftTrigger/2) / precision) * 0.75);
-
-        if (gamepad1.right_bumper && !armIsRaised) {    // Raise claw
-            armMotor.setPower(0.75);
-            try {
-                Thread.sleep(1100);
-            } catch(InterruptedException e) {
-                System.out.println("got interrupted!");
-            }
-            armMotor.setPower(0);
-
-            armIsRaised = true;
-        }
-        if (gamepad1.left_bumper && armIsRaised) {    // Lower claw
-            armMotor.setPower(-0.75);
-            try {
-                Thread.sleep(1100);
-            } catch(InterruptedException e) {
-                System.out.println("got interrupted!");
-            }
-            armMotor.setPower(0);
-
-            armIsRaised = false;
-        }
+        armMotor.setPower(0.1 + (rightTrigger - leftTrigger/2) / precision);
     }
 }
-
