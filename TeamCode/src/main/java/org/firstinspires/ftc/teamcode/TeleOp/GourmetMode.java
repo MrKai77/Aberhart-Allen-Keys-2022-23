@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
 @TeleOp
-public class GourmetOpMode extends OpMode {
+public class GourmetMode extends OpMode {
 
     DcMotor frontLeftMotor;
     DcMotor frontRightMotor;
@@ -82,8 +82,8 @@ public class GourmetOpMode extends OpMode {
         backRightMotor.setPower(BRMotorSpeed/precision);
 
         if(gamepad1.b) {    // Close claw
-            rightClaw.setPosition(1);
-            leftClaw.setPosition(0);
+            rightClaw.setPosition(0);
+            leftClaw.setPosition(1);
         }
         if(gamepad1.x) {    // Open claw
             rightClaw.setPosition(0.5);
