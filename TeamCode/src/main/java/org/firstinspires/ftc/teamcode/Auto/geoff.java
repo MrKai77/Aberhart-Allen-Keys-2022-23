@@ -99,6 +99,9 @@ public class geoff extends LinearOpMode
 
         waitForStart();
 
+        armMotor.setPower(1);
+        sleep(1000);
+        armMotor.setPower(0.1);
 
         while (tagOfInterest==null) {
             ArrayList<AprilTagDetection> currentDetections = aprilTagDetectionPipeline.getLatestDetections();
