@@ -95,10 +95,6 @@ public class AprilAuto extends LinearOpMode
          * The INIT-loop:
          * This REPLACES waitForStart!
          */
-        armMotor.setPower(1);
-        runTime.reset();
-        while(runTime.seconds() < 1){}
-        armMotor.setPower(0);
 
 
         while (!isStarted() && !isStopRequested()) {

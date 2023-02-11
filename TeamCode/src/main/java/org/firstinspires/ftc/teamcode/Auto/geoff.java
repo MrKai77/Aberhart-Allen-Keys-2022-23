@@ -171,7 +171,7 @@ public class geoff extends LinearOpMode
             telemetry.update();
         }
 
-        if(tagOfInterest.id == 1 || tagOfInterest==null){//right
+        if(tagOfInterest==null || tagOfInterest.id == 1){//right and no tag, but that should not happen *NULL MUST COME FIRST*
 
             frontLeftMotor.setPower(-1);
             frontRightMotor.setPower(1);
@@ -201,10 +201,17 @@ public class geoff extends LinearOpMode
 
             sleep(1800);
 
-            frontLeftMotor.setPower(-1);
-            frontRightMotor.setPower(1);
-            backLeftMotor.setPower(1);
-            backRightMotor.setPower(-1);
+            frontLeftMotor.setPower(0);
+            frontRightMotor.setPower(0);
+            backLeftMotor.setPower(0);
+            backRightMotor.setPower(0);
+
+        }else{//left
+
+            frontLeftMotor.setPower(1);
+            frontRightMotor.setPower(-1);
+            backLeftMotor.setPower(-1);
+            backRightMotor.setPower(1);
 
             sleep(900);
 
@@ -219,10 +226,6 @@ public class geoff extends LinearOpMode
             frontRightMotor.setPower(0);
             backLeftMotor.setPower(0);
             backRightMotor.setPower(0);
-
-        }else{//left
-
-
         }
 
     }
