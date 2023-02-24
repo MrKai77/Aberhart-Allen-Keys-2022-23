@@ -1,12 +1,12 @@
 package org.firstinspires.ftc.teamcode.TeleOp;
 
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
 @TeleOp
-public class GourmetMode extends OpMode {
+public class GourmetMode extends LinearOpMode {
     DcMotor frontLeftMotor;
     DcMotor frontRightMotor;
     DcMotor backLeftMotor;
@@ -18,7 +18,7 @@ public class GourmetMode extends OpMode {
     Servo leftClaw;
 
     @Override
-    public void init() {
+    public void runOpMode() {
         frontLeftMotor = hardwareMap.get(DcMotor.class, "FrontLeft");
         frontRightMotor = hardwareMap.get(DcMotor.class, "FrontRight");
         backLeftMotor = hardwareMap.get(DcMotor.class, "BackLeft");
@@ -30,16 +30,27 @@ public class GourmetMode extends OpMode {
         armMotor = hardwareMap.get(DcMotor.class, "ArmMotor");
         rightClaw = hardwareMap.get(Servo.class, "RightClaw");
         leftClaw =  hardwareMap.get(Servo.class, "LeftClaw");
-    }
 
-    @Override
-    public void loop() {
-        setDriveTrainSpeeds();
-        setArmStates();
+        waitForStart();
+
+        while (opModeIsActive()) {
+            setDriveTrainSpeeds();
+            setArmStates();
+        }
     }
 
     public void setArmStates() {
+        setClawStates();
+
+        armMotor.setPower(0.1 + (gamepad1.right_trigger - gamepad1.left_trigger / 1.5));
+    }
+
+    public void setClawStates() {
         if (gamepad1.b) {    // Close claw
+            armMotor.setPower(-0.2);
+            sleep(500);
+            armMotor.setPower(0);
+
             rightClaw.setPosition(0);
             leftClaw.setPosition(1);
         }
@@ -47,8 +58,6 @@ public class GourmetMode extends OpMode {
             rightClaw.setPosition(0.5);
             leftClaw.setPosition(0.5);
         }
-
-        armMotor.setPower(0.1 + (gamepad1.right_trigger - gamepad1.left_trigger/1.5));
     }
 
     public void setDriveTrainSpeeds() {
