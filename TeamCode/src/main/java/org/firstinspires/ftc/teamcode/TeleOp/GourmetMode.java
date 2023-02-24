@@ -8,6 +8,13 @@ import com.qualcomm.robotcore.hardware.Servo;
 @TeleOp
 public class GourmetMode extends OpMode {
 
+    private enum RobotSpeeds {
+        SLOW,
+        NORMAL,
+        FAST
+    }
+    RobotSpeeds speed = RobotSpeeds.NORMAL;
+    double precision = 1.5;
     DcMotor frontLeftMotor;
     DcMotor frontRightMotor;
     DcMotor backLeftMotor;
@@ -29,8 +36,8 @@ public class GourmetMode extends OpMode {
         backLeftMotor = hardwareMap.get(DcMotor.class, "BackLeft");
         backRightMotor = hardwareMap.get(DcMotor.class, "BackRight");
 
-        frontRightMotor.setDirection(DcMotor.Direction.REVERSE);
-        backRightMotor.setDirection(DcMotor.Direction.REVERSE);
+        frontLeftMotor.setDirection(DcMotor.Direction.REVERSE);
+        backLeftMotor.setDirection(DcMotor.Direction.REVERSE);
 
         armMotor = hardwareMap.get(DcMotor.class, "ArmMotor");
         rightClaw = hardwareMap.get(Servo.class, "RightClaw");
@@ -41,7 +48,6 @@ public class GourmetMode extends OpMode {
 
     @Override
     public void loop() {
-        int precision = gamepad1.right_bumper ? 3 : 1;
 
         double leftStick = gamepad1.left_stick_y;
         double rightStick = gamepad1.right_stick_y;
@@ -76,16 +82,36 @@ public class GourmetMode extends OpMode {
             }
         }
 
+        if (gamepad1.right_bumper) {
+            speed = RobotSpeeds.FAST;
+        } else if (gamepad1.left_bumper) {
+            speed = RobotSpeeds.SLOW;
+        } else {
+            speed = RobotSpeeds.NORMAL;
+        }
+
+        switch(speed) {
+            case SLOW:
+                precision = 3;
+                break;
+            case NORMAL:
+                precision = 1.5;
+                break;
+            case FAST:
+                precision = 1;
+                break;
+        }
+
         frontLeftMotor.setPower(FLMotorSpeed/precision);
         backLeftMotor.setPower(BLMotorSpeed/precision);
         frontRightMotor.setPower(FRMotorSpeed/precision);
         backRightMotor.setPower(BRMotorSpeed/precision);
 
-        if(gamepad1.b) {    // Close claw
+        if (gamepad1.b) {    // Close claw
             rightClaw.setPosition(0);
             leftClaw.setPosition(1);
         }
-        if(gamepad1.x) {    // Open claw
+        if (gamepad1.x) {    // Open claw
             rightClaw.setPosition(0.5);
             leftClaw.setPosition(0.5);
         }
@@ -94,6 +120,6 @@ public class GourmetMode extends OpMode {
         // 0.15 is the power required to keep the arm in place
         // (rightTrigger - leftTrigger/2) is to move the arm up/down respectively
         // Precision is wether precision mode is on
-        armMotor.setPower(0.1 + (rightTrigger - leftTrigger/2) / precision);
+        armMotor.setPower(0.1 + (rightTrigger - leftTrigger/1.5) / precision);
     }
 }
