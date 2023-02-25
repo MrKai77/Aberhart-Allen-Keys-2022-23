@@ -7,15 +7,16 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 @TeleOp
 public class GourmetMode extends LinearOpMode {
-    DcMotor frontLeftMotor;
-    DcMotor frontRightMotor;
-    DcMotor backLeftMotor;
-    DcMotor backRightMotor;
 
-    DcMotor armMotor;
+    private DcMotor frontLeftMotor;
+    private DcMotor frontRightMotor;
+    private DcMotor backLeftMotor;
+    private DcMotor backRightMotor;
 
-    Servo rightClaw;
-    Servo leftClaw;
+    private DcMotor armMotor;
+
+    private Servo rightClaw;
+    private Servo leftClaw;
 
     @Override
     public void runOpMode() {
@@ -39,14 +40,14 @@ public class GourmetMode extends LinearOpMode {
         }
     }
 
-    public void setArmStates() {
+    private void setArmStates() {
         setClawStates();
 
         armMotor.setPower(0.1 + (gamepad1.right_trigger - gamepad1.left_trigger / 1.5));
     }
 
-    public void setClawStates() {
-        if (gamepad1.b) {    // Close claw
+    private void setClawStates() {
+        if (gamepad1.b) {    // Close claw (lowers arm first)
             armMotor.setPower(-0.2);
             sleep(500);
             armMotor.setPower(0);
@@ -60,7 +61,7 @@ public class GourmetMode extends LinearOpMode {
         }
     }
 
-    public void setDriveTrainSpeeds() {
+    private void setDriveTrainSpeeds() {
         double FLMotorSpeed;
         double FRMotorSpeed;
         double BLMotorSpeed;
@@ -71,12 +72,14 @@ public class GourmetMode extends LinearOpMode {
             FRMotorSpeed = 1;
             BRMotorSpeed = -1;
             BLMotorSpeed = 1;
-        } else if(gamepad1.dpad_left) {
+        }
+        else if (gamepad1.dpad_left) {
             FLMotorSpeed = 1;
             FRMotorSpeed = -1;
             BRMotorSpeed = 1;
             BLMotorSpeed = -1;
-        } else {
+        }
+        else {
             FLMotorSpeed = gamepad1.left_stick_y;
             BLMotorSpeed = gamepad1.left_stick_y;
 
@@ -92,12 +95,13 @@ public class GourmetMode extends LinearOpMode {
         backRightMotor.setPower(BRMotorSpeed / motorSpeedDivider);
     }
 
-    public Double getMotorSpeedDivider() {
+    private Double getMotorSpeedDivider() {
         double motorSpeedDivider = 1.5;
 
         if (gamepad1.right_bumper) {
             motorSpeedDivider = 1;
-        } else if (gamepad1.left_bumper) {
+        }
+        else if (gamepad1.left_bumper) {
             motorSpeedDivider = 2;
         }
         return motorSpeedDivider;
