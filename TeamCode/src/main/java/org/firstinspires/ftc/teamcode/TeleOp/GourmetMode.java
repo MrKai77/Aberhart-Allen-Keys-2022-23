@@ -48,16 +48,16 @@ public class GourmetMode extends LinearOpMode {
 
     private void setClawStates() {
         if (gamepad1.b) {    // Close claw (lowers arm first)
-            armMotor.setPower(-0.2);
-            sleep(500);
+            armMotor.setPower(-0.5);
+            sleep(200);
             armMotor.setPower(0);
 
             rightClaw.setPosition(0);
             leftClaw.setPosition(1);
         }
         if (gamepad1.x) {    // Open claw
-            rightClaw.setPosition(0.5);
-            leftClaw.setPosition(0.5);
+            rightClaw.setPosition(0.7);
+            leftClaw.setPosition(0.3);
         }
     }
 
