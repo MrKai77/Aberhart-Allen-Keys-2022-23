@@ -65,8 +65,8 @@ public class geoff extends LinearOpMode
 
         armMotor = hardwareMap.get(DcMotor.class, "ArmMotor");
 
-        frontLeftMotor.setDirection(DcMotor.Direction.REVERSE);
-        backLeftMotor.setDirection(DcMotor.Direction.REVERSE);
+        frontRightMotor.setDirection(DcMotor.Direction.REVERSE);
+        backRightMotor.setDirection(DcMotor.Direction.REVERSE);
 
         ElapsedTime runTime = new ElapsedTime();
 
@@ -174,21 +174,21 @@ public class geoff extends LinearOpMode
             telemetry.update();
         }
 
-        if(tagOfInterest==null || tagOfInterest.id == 1){//right and no tag, but that should not happen *NULL MUST COME FIRST*
+        if(tagOfInterest==null || tagOfInterest.id == 1){//right and no tag, but that should not happen *NULL MUST COME FIRST
 
             frontLeftMotor.setPower(-1);
             frontRightMotor.setPower(1);
             backLeftMotor.setPower(1);
             backRightMotor.setPower(-1);
 
-            sleep(900);
+            sleep(450);
 
             frontLeftMotor.setPower(1);
             frontRightMotor.setPower(1);
             backLeftMotor.setPower(1);
             backRightMotor.setPower(1);
 
-            sleep(1800);
+            sleep(900);
 
             frontLeftMotor.setPower(0);
             frontRightMotor.setPower(0);
@@ -202,7 +202,7 @@ public class geoff extends LinearOpMode
             backLeftMotor.setPower(1);
             backRightMotor.setPower(1);
 
-            sleep(1800);
+            sleep(900);
 
             frontLeftMotor.setPower(0);
             frontRightMotor.setPower(0);
@@ -216,14 +216,14 @@ public class geoff extends LinearOpMode
             backLeftMotor.setPower(-1);
             backRightMotor.setPower(1);
 
-            sleep(900);
+            sleep(450);
 
             frontLeftMotor.setPower(1);
             frontRightMotor.setPower(1);
             backLeftMotor.setPower(1);
             backRightMotor.setPower(1);
 
-            sleep(1800);
+            sleep(900);
 
             frontLeftMotor.setPower(0);
             frontRightMotor.setPower(0);
