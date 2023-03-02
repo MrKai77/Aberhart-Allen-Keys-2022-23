@@ -52,6 +52,18 @@ public class GourmetMode extends LinearOpMode {
             sleep(200);
             armMotor.setPower(0);
 
+            frontLeftMotor.setPower(0.8);
+            backLeftMotor.setPower(0.8);
+            frontRightMotor.setPower(0.8);
+            backRightMotor.setPower(0.8);
+
+            sleep(500);
+
+            frontLeftMotor.setPower(0);
+            backLeftMotor.setPower(0);
+            frontRightMotor.setPower(0);
+            backRightMotor.setPower(0);
+
             rightClaw.setPosition(0);
             leftClaw.setPosition(1);
         }
@@ -102,7 +114,7 @@ public class GourmetMode extends LinearOpMode {
             motorSpeedDivider = 1;
         }
         else if (gamepad1.left_bumper) {
-            motorSpeedDivider = 2;
+            motorSpeedDivider = 3;
         }
         return motorSpeedDivider;
     }
