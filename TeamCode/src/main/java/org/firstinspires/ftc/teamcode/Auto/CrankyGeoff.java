@@ -147,14 +147,14 @@ public class CrankyGeoff extends LinearOpMode {
                 backLeftMotor.setPower(-1);
                 backRightMotor.setPower(1);
 
-                sleep(450);
+                sleep(450/2);
 
                 frontLeftMotor.setPower(1);
                 frontRightMotor.setPower(1);
                 backLeftMotor.setPower(1);
                 backRightMotor.setPower(1);
 
-                sleep(900);
+                sleep(900/2);
 
                 frontLeftMotor.setPower(0);
                 frontRightMotor.setPower(0);
@@ -168,14 +168,14 @@ public class CrankyGeoff extends LinearOpMode {
                 backLeftMotor.setPower(1);
                 backRightMotor.setPower(-1);
 
-                sleep(450);
+                sleep(450/2);
 
                 frontLeftMotor.setPower(1);
                 frontRightMotor.setPower(1);
                 backLeftMotor.setPower(1);
                 backRightMotor.setPower(1);
 
-                sleep(900);
+                sleep(900/2);
 
                 frontLeftMotor.setPower(0);
                 frontRightMotor.setPower(0);
@@ -189,7 +189,7 @@ public class CrankyGeoff extends LinearOpMode {
                 backLeftMotor.setPower(1);
                 backRightMotor.setPower(1);
 
-                sleep(900);
+                sleep(900/2);
 
                 frontLeftMotor.setPower(0);
                 frontRightMotor.setPower(0);
