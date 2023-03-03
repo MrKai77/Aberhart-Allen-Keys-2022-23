@@ -4,6 +4,7 @@ package org.firstinspires.ftc.teamcode.Auto;
 
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -17,6 +18,7 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 import java.util.ArrayList;
 
 @Autonomous
+@Disabled
 public class ThisIsATest extends LinearOpMode
 {
     //INTRODUCE VARIABLES HERE
