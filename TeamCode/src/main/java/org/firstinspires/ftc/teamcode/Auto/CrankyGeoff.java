@@ -16,7 +16,7 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 import java.util.ArrayList;
 
 @Autonomous
-public class Geoff extends LinearOpMode {
+public class CrankyGeoff extends LinearOpMode {
 
     OpenCvCamera camera;
     AprilTagDetectionPipeline aprilTagDetectionPipeline;
@@ -37,30 +37,20 @@ public class Geoff extends LinearOpMode {
     double cy = 221.506;
 
     // UNITS ARE METERS
-    double tagsize = 0.166;
+    double tagSize = 0.166;
 
     // Tag ID 1,2,3 from the 36h11 family
     static final int LEFT = 1;
     static final int MIDDLE = 2;
     static final int RIGHT = 3;
 
-    AprilTagDetection tagOfInterest = null;
-
     @Override
     public void runOpMode() {
+
+        // -- Initializing camera --
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         camera = OpenCvCameraFactory.getInstance().createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
-        aprilTagDetectionPipeline = new AprilTagDetectionPipeline(tagsize, fx, fy, cx, cy);
-
-        frontLeftMotor = hardwareMap.get(DcMotor.class, "FrontLeft");
-        frontRightMotor = hardwareMap.get(DcMotor.class, "FrontRight");
-        backLeftMotor = hardwareMap.get(DcMotor.class, "BackLeft");
-        backRightMotor = hardwareMap.get(DcMotor.class, "BackRight");
-
-        armMotor = hardwareMap.get(DcMotor.class, "ArmMotor");
-
-        frontRightMotor.setDirection(DcMotor.Direction.REVERSE);
-        backRightMotor.setDirection(DcMotor.Direction.REVERSE);
+        aprilTagDetectionPipeline = new AprilTagDetectionPipeline(tagSize, fx, fy, cx, cy);
 
         camera.setPipeline(aprilTagDetectionPipeline);
         camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
@@ -77,11 +67,29 @@ public class Geoff extends LinearOpMode {
 
         telemetry.setMsTransmissionInterval(50);
 
+        // -- Initializing motors --
+        frontLeftMotor = hardwareMap.get(DcMotor.class, "FrontLeft");
+        frontRightMotor = hardwareMap.get(DcMotor.class, "FrontRight");
+        backLeftMotor = hardwareMap.get(DcMotor.class, "BackLeft");
+        backRightMotor = hardwareMap.get(DcMotor.class, "BackRight");
+
+        frontRightMotor.setDirection(DcMotor.Direction.REVERSE);
+        backRightMotor.setDirection(DcMotor.Direction.REVERSE);
+
+        armMotor = hardwareMap.get(DcMotor.class, "ArmMotor");
+
         waitForStart();
 
+        // Raises arm so that tag can be read
         armMotor.setPower(1);
         sleep(1000);
         armMotor.setPower(0.1);
+
+        moveRobotToPosition(findTag());
+    }
+
+    int findTag() {
+        AprilTagDetection tagOfInterest = null;
 
         while (tagOfInterest == null) {
             ArrayList<AprilTagDetection> currentDetections = aprilTagDetectionPipeline.getLatestDetections();
@@ -103,10 +111,10 @@ public class Geoff extends LinearOpMode {
                 } else {
                     telemetry.addLine("Don't see the right tags :(");
 
-                    if (tagOfInterest == null) {
+                    if (tagOfInterest != null) {
                         telemetry.addLine("(The tag has never been seen)");
                     } else {
-                        telemetry.addLine("\nBut we HAVE seen the tag before; last seen at:");
+                        telemetry.addLine("\nWe HAVE seen the tag before; last seen at:");
                         tagToTelemetry(tagOfInterest);
                     }
                 }
@@ -127,12 +135,15 @@ public class Geoff extends LinearOpMode {
             sleep(20);
         }
 
-
         telemetry.addLine("Tag snapshot:\n");
         tagToTelemetry(tagOfInterest);
         telemetry.update();
 
-        switch (tagOfInterest.id) {
+        return tagOfInterest.id;
+    }
+
+    void moveRobotToPosition(int position) {
+        switch (position) {
             case RIGHT:
                 frontLeftMotor.setPower(1);
                 frontRightMotor.setPower(-1);
@@ -154,7 +165,14 @@ public class Geoff extends LinearOpMode {
                 backRightMotor.setPower(0);
                 break;
 
-            default:    // Middle/no tag
+            case LEFT:
+                frontLeftMotor.setPower(-1);
+                frontRightMotor.setPower(1);
+                backLeftMotor.setPower(1);
+                backRightMotor.setPower(-1);
+
+                sleep(450);
+
                 frontLeftMotor.setPower(1);
                 frontRightMotor.setPower(1);
                 backLeftMotor.setPower(1);
@@ -168,14 +186,7 @@ public class Geoff extends LinearOpMode {
                 backRightMotor.setPower(0);
                 break;
 
-            case LEFT:
-                frontLeftMotor.setPower(-1);
-                frontRightMotor.setPower(1);
-                backLeftMotor.setPower(1);
-                backRightMotor.setPower(-1);
-
-                sleep(450);
-
+            default:    // Middle/no tag
                 frontLeftMotor.setPower(1);
                 frontRightMotor.setPower(1);
                 backLeftMotor.setPower(1);
