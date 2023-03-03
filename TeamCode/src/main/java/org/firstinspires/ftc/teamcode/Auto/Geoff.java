@@ -5,23 +5,18 @@ package org.firstinspires.ftc.teamcode.Auto;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.openftc.apriltag.AprilTagDetection;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
-import org.openftc.easyopencv.OpenCvInternalCamera;
 
 import java.util.ArrayList;
 
 @Autonomous
-public class geoff extends LinearOpMode
-{
-    //INTRODUCE VARIABLES HERE
+public class Geoff extends LinearOpMode {
 
     OpenCvCamera camera;
     AprilTagDetectionPipeline aprilTagDetectionPipeline;
@@ -33,8 +28,8 @@ public class geoff extends LinearOpMode
 
     static final double FEET_PER_METER = 3.28084;
 
-    //This is fancy stuff, idk man I don't think this needs to be changed.
-    //If it keeps being finicky than maybe.
+    // This is fancy stuff, idk man I don't think this needs to be changed.
+    // If it keeps being finicky than maybe.
 
     double fx = 578.272;
     double fy = 578.272;
@@ -45,10 +40,9 @@ public class geoff extends LinearOpMode
     double tagsize = 0.166;
 
     // Tag ID 1,2,3 from the 36h11 family
-
-    int LEFT = 1;
-    int MIDDLE = 2;
-    int RIGHT = 3;
+    static final int LEFT = 1;
+    static final int MIDDLE = 2;
+    static final int RIGHT = 3;
 
     AprilTagDetection tagOfInterest = null;
 
@@ -68,34 +62,20 @@ public class geoff extends LinearOpMode
         frontRightMotor.setDirection(DcMotor.Direction.REVERSE);
         backRightMotor.setDirection(DcMotor.Direction.REVERSE);
 
-        ElapsedTime runTime = new ElapsedTime();
-
         camera.setPipeline(aprilTagDetectionPipeline);
-        camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener()
-        {
+        camera.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
             @Override
-            public void onOpened()
-            {
-                camera.startStreaming(1280,720, OpenCvCameraRotation.UPRIGHT);
+            public void onOpened() {
+                camera.startStreaming(1280, 720, OpenCvCameraRotation.UPRIGHT);
             }
 
             @Override
-            public void onError(int errorCode)
-            {
+            public void onError(int errorCode) {
 
             }
         });
 
         telemetry.setMsTransmissionInterval(50);
-
-
-        //HARDWARE MAPPING HERE etc.
-
-
-        /*
-         * The INIT-loop:
-         * This REPLACES waitForStart!
-         */
 
         waitForStart();
 
@@ -103,54 +83,40 @@ public class geoff extends LinearOpMode
         sleep(1000);
         armMotor.setPower(0.1);
 
-        while (tagOfInterest==null) {
+        while (tagOfInterest == null) {
             ArrayList<AprilTagDetection> currentDetections = aprilTagDetectionPipeline.getLatestDetections();
 
-            if(currentDetections.size() != 0)
-            {
+            if (currentDetections.size() != 0) {    // If we see a tag
                 boolean tagFound = false;
 
-                for(AprilTagDetection tag : currentDetections)
-                {
-                    if(tag.id == LEFT || tag.id == MIDDLE || tag.id == RIGHT)
-                    {
+                for (AprilTagDetection tag: currentDetections) {
+                    if (tag.id == LEFT || tag.id == MIDDLE || tag.id == RIGHT) {
                         tagOfInterest = tag;
                         tagFound = true;
                         break;
                     }
                 }
 
-                if(tagFound)
-                {
+                if (tagFound) {
                     telemetry.addLine("Tag of interest is in sight!\n\nLocation data:");
                     tagToTelemetry(tagOfInterest);
-                }
-                else
-                {
+                } else {
                     telemetry.addLine("Don't see the right tags :(");
 
-                    if(tagOfInterest == null)
-                    {
+                    if (tagOfInterest == null) {
                         telemetry.addLine("(The tag has never been seen)");
-                    }
-                    else
-                    {
+                    } else {
                         telemetry.addLine("\nBut we HAVE seen the tag before; last seen at:");
                         tagToTelemetry(tagOfInterest);
                     }
                 }
 
-            }
-            else
-            {
+            } else {    // If we don't see a tag
                 telemetry.addLine("Don't see any tags :(");
 
-                if(tagOfInterest == null)
-                {
+                if (tagOfInterest == null) {
                     telemetry.addLine("(The tag has never been seen)");
-                }
-                else
-                {
+                } else {
                     telemetry.addLine("\nBut we HAVE seen the tag before; last seen at:");
                     tagToTelemetry(tagOfInterest);
                 }
@@ -162,79 +128,70 @@ public class geoff extends LinearOpMode
         }
 
 
+        telemetry.addLine("Tag snapshot:\n");
+        tagToTelemetry(tagOfInterest);
+        telemetry.update();
 
+        switch (tagOfInterest.id) {
+            case RIGHT:
+                frontLeftMotor.setPower(1);
+                frontRightMotor.setPower(-1);
+                backLeftMotor.setPower(-1);
+                backRightMotor.setPower(1);
 
+                sleep(450);
 
-        if(tagOfInterest != null) {
-            telemetry.addLine("Tag snapshot:\n");
-            tagToTelemetry(tagOfInterest);
-            telemetry.update();
-        } else {
-            telemetry.addLine("No tag snapshot available, it was never sighted during the init loop :(");
-            telemetry.update();
+                frontLeftMotor.setPower(1);
+                frontRightMotor.setPower(1);
+                backLeftMotor.setPower(1);
+                backRightMotor.setPower(1);
+
+                sleep(900);
+
+                frontLeftMotor.setPower(0);
+                frontRightMotor.setPower(0);
+                backLeftMotor.setPower(0);
+                backRightMotor.setPower(0);
+                break;
+
+            default:    // Middle/no tag
+                frontLeftMotor.setPower(1);
+                frontRightMotor.setPower(1);
+                backLeftMotor.setPower(1);
+                backRightMotor.setPower(1);
+
+                sleep(900);
+
+                frontLeftMotor.setPower(0);
+                frontRightMotor.setPower(0);
+                backLeftMotor.setPower(0);
+                backRightMotor.setPower(0);
+                break;
+
+            case LEFT:
+                frontLeftMotor.setPower(-1);
+                frontRightMotor.setPower(1);
+                backLeftMotor.setPower(1);
+                backRightMotor.setPower(-1);
+
+                sleep(450);
+
+                frontLeftMotor.setPower(1);
+                frontRightMotor.setPower(1);
+                backLeftMotor.setPower(1);
+                backRightMotor.setPower(1);
+
+                sleep(900);
+
+                frontLeftMotor.setPower(0);
+                frontRightMotor.setPower(0);
+                backLeftMotor.setPower(0);
+                backRightMotor.setPower(0);
+                break;
         }
-
-        if(tagOfInterest==null || tagOfInterest.id == 1){//right and no tag, but that should not happen *NULL MUST COME FIRST
-
-            frontLeftMotor.setPower(-1);
-            frontRightMotor.setPower(1);
-            backLeftMotor.setPower(1);
-            backRightMotor.setPower(-1);
-
-            sleep(450);
-
-            frontLeftMotor.setPower(1);
-            frontRightMotor.setPower(1);
-            backLeftMotor.setPower(1);
-            backRightMotor.setPower(1);
-
-            sleep(900);
-
-            frontLeftMotor.setPower(0);
-            frontRightMotor.setPower(0);
-            backLeftMotor.setPower(0);
-            backRightMotor.setPower(0);
-
-        }else if(tagOfInterest.id == 2 ){//middle
-
-            frontLeftMotor.setPower(1);
-            frontRightMotor.setPower(1);
-            backLeftMotor.setPower(1);
-            backRightMotor.setPower(1);
-
-            sleep(900);
-
-            frontLeftMotor.setPower(0);
-            frontRightMotor.setPower(0);
-            backLeftMotor.setPower(0);
-            backRightMotor.setPower(0);
-
-        }else{//left
-
-            frontLeftMotor.setPower(1);
-            frontRightMotor.setPower(-1);
-            backLeftMotor.setPower(-1);
-            backRightMotor.setPower(1);
-
-            sleep(450);
-
-            frontLeftMotor.setPower(1);
-            frontRightMotor.setPower(1);
-            backLeftMotor.setPower(1);
-            backRightMotor.setPower(1);
-
-            sleep(900);
-
-            frontLeftMotor.setPower(0);
-            frontRightMotor.setPower(0);
-            backLeftMotor.setPower(0);
-            backRightMotor.setPower(0);
-        }
-
     }
 
-    void tagToTelemetry(AprilTagDetection detection)
-    {
+    void tagToTelemetry(AprilTagDetection detection) {
         telemetry.addLine(String.format("\nDetected tag ID=%d", detection.id));
         telemetry.addLine(String.format("Translation X: %.2f feet", detection.pose.x*FEET_PER_METER));
         telemetry.addLine(String.format("Translation Y: %.2f feet", detection.pose.y*FEET_PER_METER));
