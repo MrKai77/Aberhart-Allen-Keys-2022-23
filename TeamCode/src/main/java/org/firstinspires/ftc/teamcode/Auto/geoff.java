@@ -185,7 +185,7 @@ public class geoff extends LinearOpMode
             telemetry.update();
         }
 
-        if(tagOfInterest==null || tagOfInterest.id == 1){//right and no tag, but that should not happen *NULL MUST COME FIRST
+        if(tagOfInterest==null || tagOfInterest.id == 3){//right and no tag, but that should not happen *NULL MUST COME FIRST
 
             frontLeftMotor.setPower(0.5);
             frontRightMotor.setPower(0.5);

@@ -46,22 +46,8 @@ public class GourmetMode extends LinearOpMode {
         armMotor.setPower(0.1 + (gamepad1.right_trigger - gamepad1.left_trigger / 1.5));
     }
 
-//    private void setArmPosition(Boolean up) {
-//        armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-//
-//        if (up) {
-//            armMotor.setTargetPosition(80);
-//        }
-//        else {
-//            armMotor.setTargetPosition(-80);
-//        }
-//
-//        armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-//        armMotor.setPower(0.9);
-//    }
-
     private void setClawStates() {
-        if (gamepad1.a) {    // Open claw
+        if (gamepad1.b) {    // Automated close claw
             rightClaw.setPosition(0.7);
             leftClaw.setPosition(0.3);
 
@@ -85,8 +71,16 @@ public class GourmetMode extends LinearOpMode {
 
             rightClaw.setPosition(0);
             leftClaw.setPosition(1);
+
+            sleep(300);
+
+            armMotor.setPower(0.5);
+            sleep(100);
+            armMotor.setPower(0);
         }
-        if (gamepad1.b) {    // Close claw (lowers arm first)
+
+
+        if (gamepad1.a) {    // Close claw
             rightClaw.setPosition(0);
             leftClaw.setPosition(1);
         }
@@ -102,13 +96,13 @@ public class GourmetMode extends LinearOpMode {
         double BLMotorSpeed;
         double BRMotorSpeed;
 
-        if (gamepad1.dpad_right) {
+        if (gamepad1.dpad_left) {
             FLMotorSpeed = 1;
             FRMotorSpeed = 1;
             BRMotorSpeed = -1;
             BLMotorSpeed = -1;
         }
-        else if (gamepad1.dpad_left) {
+        else if (gamepad1.dpad_right) {
             FLMotorSpeed = -1;
             FRMotorSpeed = -1;
             BRMotorSpeed = 1;
@@ -131,7 +125,7 @@ public class GourmetMode extends LinearOpMode {
     }
 
     private Double getMotorSpeedDivider() {
-        double motorSpeedDivider = 1.5;
+        double motorSpeedDivider = 1.2;
 
         if (gamepad1.right_bumper) {
             motorSpeedDivider = 1;
@@ -141,4 +135,18 @@ public class GourmetMode extends LinearOpMode {
         }
         return motorSpeedDivider;
     }
+
+//    private void setArmPosition(Boolean up) {
+//        armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//
+//        if (up) {
+//            armMotor.setTargetPosition(10);
+//        }
+//        else {
+//            armMotor.setTargetPosition(-10);
+//        }
+//
+//        armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//        armMotor.setPower(1);
+//    }
 }

@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.Auto;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
@@ -142,19 +143,26 @@ public class CrankyGeoff extends LinearOpMode {
     void moveRobotToPosition(int position) {
         switch (position) {
             case RIGHT:
-                frontLeftMotor.setPower(1);
-                frontRightMotor.setPower(-1);
-                backLeftMotor.setPower(-1);
-                backRightMotor.setPower(1);
+                frontLeftMotor.setPower(0.5);
+                frontRightMotor.setPower(0.5);
+                backLeftMotor.setPower(0.5);
+                backRightMotor.setPower(0.5);
 
-                sleep(450/2);
+                sleep(200);
 
-                frontLeftMotor.setPower(1);
-                frontRightMotor.setPower(1);
-                backLeftMotor.setPower(1);
-                backRightMotor.setPower(1);
+                frontLeftMotor.setPower(0.5);
+                frontRightMotor.setPower(0.5);
+                backLeftMotor.setPower(-0.5);
+                backRightMotor.setPower(-0.5);
 
-                sleep(900/2);
+                sleep(2600);
+
+                frontLeftMotor.setPower(0.5);
+                frontRightMotor.setPower(0.5);
+                backLeftMotor.setPower(0.5);
+                backRightMotor.setPower(0.5);
+
+                sleep(1350);
 
                 frontLeftMotor.setPower(0);
                 frontRightMotor.setPower(0);
@@ -163,19 +171,26 @@ public class CrankyGeoff extends LinearOpMode {
                 break;
 
             case LEFT:
-                frontLeftMotor.setPower(-1);
-                frontRightMotor.setPower(1);
-                backLeftMotor.setPower(1);
-                backRightMotor.setPower(-1);
+                frontLeftMotor.setPower(0.5);
+                frontRightMotor.setPower(0.5);
+                backLeftMotor.setPower(0.5);
+                backRightMotor.setPower(0.5);
 
-                sleep(450/2);
+                sleep(200);
 
-                frontLeftMotor.setPower(1);
-                frontRightMotor.setPower(1);
-                backLeftMotor.setPower(1);
-                backRightMotor.setPower(1);
+                frontLeftMotor.setPower(-0.5);
+                frontRightMotor.setPower(-0.5);
+                backLeftMotor.setPower(0.5);
+                backRightMotor.setPower(0.5);
 
-                sleep(900/2);
+                sleep(2500);
+
+                frontLeftMotor.setPower(0.5);
+                frontRightMotor.setPower(0.5);
+                backLeftMotor.setPower(0.5);
+                backRightMotor.setPower(0.5);
+
+                sleep(1600);
 
                 frontLeftMotor.setPower(0);
                 frontRightMotor.setPower(0);
@@ -184,12 +199,12 @@ public class CrankyGeoff extends LinearOpMode {
                 break;
 
             default:    // Middle/no tag
-                frontLeftMotor.setPower(1);
-                frontRightMotor.setPower(1);
-                backLeftMotor.setPower(1);
-                backRightMotor.setPower(1);
+                frontLeftMotor.setPower(0.5);
+                frontRightMotor.setPower(0.5);
+                backLeftMotor.setPower(0.5);
+                backRightMotor.setPower(0.5);
 
-                sleep(900/2);
+                sleep(1800);
 
                 frontLeftMotor.setPower(0);
                 frontRightMotor.setPower(0);
