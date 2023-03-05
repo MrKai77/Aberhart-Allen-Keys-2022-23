@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
@@ -30,6 +31,11 @@ public class geoff extends LinearOpMode
     DcMotor backLeftMotor;
     DcMotor backRightMotor;
     DcMotor armMotor;
+
+    Servo leftClaw;
+    Servo rightClaw;
+
+
 
     static final double FEET_PER_METER = 3.28084;
 
@@ -68,6 +74,10 @@ public class geoff extends LinearOpMode
         frontRightMotor.setDirection(DcMotor.Direction.REVERSE);
         backRightMotor.setDirection(DcMotor.Direction.REVERSE);
 
+        rightClaw = hardwareMap.get(Servo.class, "RightClaw");
+        leftClaw =  hardwareMap.get(Servo.class, "LeftClaw");
+
+
         ElapsedTime runTime = new ElapsedTime();
 
         camera.setPipeline(aprilTagDetectionPipeline);
@@ -92,14 +102,15 @@ public class geoff extends LinearOpMode
         //HARDWARE MAPPING HERE etc.
 
 
-        /*
-         * The INIT-loop:
-         * This REPLACES waitForStart!
-         */
 
         waitForStart();
 
-        armMotor.setPower(1);
+        rightClaw.setPosition(0);
+        leftClaw.setPosition(1);
+
+        sleep(1000);
+
+        armMotor.setPower(0.8);
         sleep(1000);
         armMotor.setPower(0.1);
 
@@ -176,19 +187,26 @@ public class geoff extends LinearOpMode
 
         if(tagOfInterest==null || tagOfInterest.id == 1){//right and no tag, but that should not happen *NULL MUST COME FIRST
 
-            frontLeftMotor.setPower(-1);
-            frontRightMotor.setPower(1);
-            backLeftMotor.setPower(1);
-            backRightMotor.setPower(-1);
+            frontLeftMotor.setPower(0.5);
+            frontRightMotor.setPower(0.5);
+            backLeftMotor.setPower(0.5);
+            backRightMotor.setPower(0.5);
 
-            sleep(450);
+            sleep(200);
 
-            frontLeftMotor.setPower(1);
-            frontRightMotor.setPower(1);
-            backLeftMotor.setPower(1);
-            backRightMotor.setPower(1);
+            frontLeftMotor.setPower(0.5);
+            frontRightMotor.setPower(0.5);
+            backLeftMotor.setPower(-0.5);
+            backRightMotor.setPower(-0.5);
 
-            sleep(900);
+            sleep(2600);
+
+            frontLeftMotor.setPower(0.5);
+            frontRightMotor.setPower(0.5);
+            backLeftMotor.setPower(0.5);
+            backRightMotor.setPower(0.5);
+
+            sleep(1350);
 
             frontLeftMotor.setPower(0);
             frontRightMotor.setPower(0);
@@ -197,12 +215,12 @@ public class geoff extends LinearOpMode
 
         }else if(tagOfInterest.id == 2 ){//middle
 
-            frontLeftMotor.setPower(1);
-            frontRightMotor.setPower(1);
-            backLeftMotor.setPower(1);
-            backRightMotor.setPower(1);
+            frontLeftMotor.setPower(0.5);
+            frontRightMotor.setPower(0.5);
+            backLeftMotor.setPower(0.5);
+            backRightMotor.setPower(0.5);
 
-            sleep(900);
+            sleep(1800);
 
             frontLeftMotor.setPower(0);
             frontRightMotor.setPower(0);
@@ -211,19 +229,26 @@ public class geoff extends LinearOpMode
 
         }else{//left
 
-            frontLeftMotor.setPower(1);
-            frontRightMotor.setPower(-1);
-            backLeftMotor.setPower(-1);
-            backRightMotor.setPower(1);
+            frontLeftMotor.setPower(0.5);
+            frontRightMotor.setPower(0.5);
+            backLeftMotor.setPower(0.5);
+            backRightMotor.setPower(0.5);
 
-            sleep(450);
+            sleep(200);
 
-            frontLeftMotor.setPower(1);
-            frontRightMotor.setPower(1);
-            backLeftMotor.setPower(1);
-            backRightMotor.setPower(1);
+            frontLeftMotor.setPower(-0.5);
+            frontRightMotor.setPower(-0.5);
+            backLeftMotor.setPower(0.5);
+            backRightMotor.setPower(0.5);
 
-            sleep(900);
+            sleep(2500);
+
+            frontLeftMotor.setPower(0.5);
+            frontRightMotor.setPower(0.5);
+            backLeftMotor.setPower(0.5);
+            backRightMotor.setPower(0.5);
+
+            sleep(1600);
 
             frontLeftMotor.setPower(0);
             frontRightMotor.setPower(0);

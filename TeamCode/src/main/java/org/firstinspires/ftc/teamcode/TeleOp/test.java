@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
 @TeleOp
-public class GourmetMode extends LinearOpMode {
+public class test extends LinearOpMode {
 
     private DcMotor frontLeftMotor;
     private DcMotor frontRightMotor;
@@ -103,15 +103,15 @@ public class GourmetMode extends LinearOpMode {
         double BRMotorSpeed;
 
         if (gamepad1.dpad_right) {
-            FLMotorSpeed = 1;
+            FLMotorSpeed = -1;
             FRMotorSpeed = 1;
-            BRMotorSpeed = -1;
+            BRMotorSpeed = 1;
             BLMotorSpeed = -1;
         }
         else if (gamepad1.dpad_left) {
-            FLMotorSpeed = -1;
+            FLMotorSpeed = 1;
             FRMotorSpeed = -1;
-            BRMotorSpeed = 1;
+            BRMotorSpeed = -1;
             BLMotorSpeed = 1;
         }
         else {
